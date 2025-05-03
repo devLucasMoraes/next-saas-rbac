@@ -234,11 +234,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://docker:docker@localhost:5432/next-saas?schema=public"
+        "value": null
       }
     }
   },
