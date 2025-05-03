@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/http/server.ts"
+    "dev": "pnpm env:load tsx watch src/http/server.ts",
+    "db:migrate": "pnpm env:load prisma migrate dev",
+    "db:studio": "pnpm env:load prisma studio",
+    "db:generate": "pnpm env:load prisma generate",
+    "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
@@ -12,6 +16,7 @@
     "@fastify/swagger-ui": "^5.2.2",
     "@prisma/client": "6.7.0",
     "@saas/auth": "workspace:*",
+    "@saas/env": "workspace:*",
     "bcryptjs": "^3.0.2",
     "fastify": "^5.3.2",
     "fastify-plugin": "^5.0.1",
@@ -25,6 +30,7 @@
     "@saas/tsconfig": "workspace:*",
     "@types/bcryptjs": "^3.0.0",
     "@types/node": "^22.15.3",
+    "dotenv-cli": "^8.0.0",
     "prisma": "^6.7.0",
     "tsx": "^4.19.3"
   },
