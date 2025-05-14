@@ -3,7 +3,6 @@
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState, useTransition } from 'react'
 
 import githubIcon from '@/assets/github-icon.svg'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -11,33 +10,15 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { useFormState } from '@/hooks/use-form-state'
 
 import { signInWithGithub } from '../actions'
 import { singInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
-  const [{ success, message, errors }, setFormState] = useState<{
-    success: boolean
-    message: string | null
-    errors: Record<string, string[]> | null
-  }>({
-    success: false,
-    message: null,
-    errors: null,
-  })
-
-  const [isPending, startTransition] = useTransition()
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-
-    const form = event.currentTarget
-    const data = new FormData(form)
-
-    startTransition(async () => {
-      const state = await singInWithEmailAndPassword(data)
-      setFormState(state)
-    })
-  }
+  const [{ errors, success, message }, handleSubmit, isPending] = useFormState(
+    singInWithEmailAndPassword,
+  )
 
   return (
     <div className="space-y-4">
