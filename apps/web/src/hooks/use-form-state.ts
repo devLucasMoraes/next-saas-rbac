@@ -1,6 +1,5 @@
 import { useState, useTransition } from 'react'
-
-import { singInWithEmailAndPassword } from '@/app/auth/sign-in/actions'
+import { requestFormReset } from 'react-dom'
 
 interface FormState {
   success: boolean
@@ -10,8 +9,11 @@ interface FormState {
 
 export function useFormState(
   action: (data: FormData) => Promise<FormState>,
+  onSuccess?: () => Promise<void> | void,
   initalState?: FormState,
 ) {
+  const [isPending, startTransition] = useTransition()
+
   const [formState, setFormState] = useState<{
     success: boolean
     message: string | null
@@ -24,7 +26,6 @@ export function useFormState(
     },
   )
 
-  const [isPending, startTransition] = useTransition()
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -32,9 +33,16 @@ export function useFormState(
     const data = new FormData(form)
 
     startTransition(async () => {
-      const state = await singInWithEmailAndPassword(data)
+      const state = await action(data)
+
+      if (state.success && onSuccess) {
+        await onSuccess()
+      }
+
       setFormState(state)
     })
+
+    requestFormReset(form)
   }
 
   return [formState, handleSubmit, isPending] as const
