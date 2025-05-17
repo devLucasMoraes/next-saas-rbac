@@ -39,10 +39,11 @@ export function useFormState(
         await onSuccess()
       }
 
-      setFormState(state)
+      startTransition(() => {
+        setFormState(state)
+        requestFormReset(form)
+      })
     })
-
-    requestFormReset(form)
   }
 
   return [formState, handleSubmit, isPending] as const
