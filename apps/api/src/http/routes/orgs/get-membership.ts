@@ -10,7 +10,7 @@ export async function getMembership(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/orgs/:slug/membership',
+      '/organization/:slug/membership',
       {
         schema: {
           tags: ['organizations'],
@@ -24,6 +24,7 @@ export async function getMembership(app: FastifyInstance) {
               membership: z.object({
                 id: z.string().uuid(),
                 role: roleSchema,
+                userId: z.string().uuid(),
                 organizationId: z.string().uuid(),
               }),
             }),
@@ -38,6 +39,7 @@ export async function getMembership(app: FastifyInstance) {
           membership: {
             id: membership.membership.id,
             role: membership.membership.role,
+            userId: membership.membership.userId,
             organizationId: membership.organization.id,
           },
         })
