@@ -3,7 +3,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet'
+} from '@/components/intercepted-sheet'
 
 import { OrganizationForm } from '../../create-organization/organization-form'
 
